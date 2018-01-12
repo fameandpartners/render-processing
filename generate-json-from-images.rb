@@ -1,9 +1,10 @@
 require 'pp'
 require 'json'
+require './fp-dr1005-102'
 
+dress = Dress.new
 file_names = ARGV.first
 
-@customization_list = ['t2', 't3', 't4', 't6', 't22', 't27', 't29', 't31', 't33', 't35', 't44', 't51', 't58', 't60', 'b1', 'b3', 'b13', 'b20', 'a1', 'a2', 'a5']
 @all_lengths = { "micro": "Micro-Mini", "knee": "Knee", "mini": "Mini", "midi": "Midi", "ankle": "Ankle", "maxi": "Maxi"}
 
 @length_names = @all_lengths.map { |key_value| key_value.last }
@@ -33,7 +34,9 @@ def add_appropriate_layer( splits, hash )
   hash = {} if hash.nil?
   location_position = splits.length - 2
   location = splits[location_position]
-  if( location == 'behind' || location == 'infront' || location == 'behindbelt' )
+  
+  if( location == 'behind' || location == 'infront' || location == 'belt' )
+    location ='behindbelt' if location == 'belt'
     hash[location] = [makefilename( splits )]
   else
     hash[location] = makefilename( splits )
@@ -95,15 +98,8 @@ def handle_conditional_customization( splits, json )
 end
 
 processed_files = []
-final_json = Hash.new { |hash,key| hash[key] = Hash.new {|hash2,key2| hash2[key2] = Hash.new } }
-@all_lengths = { "micro": "Micro-Mini", "knee": "Knee", "mini": "Mini", "midi": "Midi", "ankle": "Ankle", "maxi": "Maxi"}
-final_json['Micro-Mini']['default'] = { "front": { "bottom": "b5_micro_mini_flared_bottom_front",  "belt": "default_belt_front", "neckline": "t1_neckline_front" }, "back": { "bottom": "b5_micro_mini_flared_bottom_back", "belt":"default_belt_back", "neckline": "t1_neckline_back" } }
-final_json['Knee']['default'] = { "front": { "bottom": "b5_knee_bottom_front",  "belt": "default_belt_front", "neckline": "t1_neckline_front" }, "back": { "bottom": "b5_knee_bottom_back", "belt":"default_belt_back", "neckline": "t1_neckline_back" } }
-final_json['Mini']['default'] = { "front": { "bottom": "b5_mini_bottom_front",  "belt": "default_belt_front", "neckline": "t1_neckline_front" }, "back": { "bottom": "b5_mini_bottom_back", "belt":"default_belt_back", "neckline": "t1_neckline_back" } }
-final_json['Midi']['default'] = { "front": { "bottom": "b5_midi_bottom_front",  "belt": "default_belt_front", "neckline": "t1_neckline_front" }, "back": { "bottom": "b5_midi_bottom_back", "belt":"default_belt_back", "neckline": "t1_neckline_back" } }
-final_json['Ankle']['default'] = { "front": { "bottom": "default_b5_ankle_bottom_front",  "belt": "default_belt_front", "neckline": "t1_neckline_front" }, "back": { "bottom": "default_b05_ankle_bottom_back", "belt":"default_belt_back", "neckline": "t1_neckline_back" } }
-final_json['Maxi']['default'] = { "front": { "bottom": "b5_maxi_bottom_front",  "belt": "default_belt_front", "neckline": "t1_neckline_front" }, "back": { "bottom": "b5_maxi_bottom_front", "belt":"default_belt_back", "neckline": "t1_neckline_back" } }
 
+final_json = dress.starting_json
 
 File.readlines( file_names ).each do |file|
   file_without_extenions = file.split( '.' ).first
@@ -111,7 +107,7 @@ File.readlines( file_names ).each do |file|
   split_file = split_file[0..split_file.length - 2 ] #lose the color
   filename_without_color = split_file.join( '_' )
 
-  if( split_file.count > 2 &&  @customization_list.index( split_file.first ) != nil )
+  if( split_file.count > 2 &&  dress.customization_list.index( split_file.first ) != nil )
     unless( processed_files.index( filename_without_color ) )
       processed_files << filename_without_color
       if( is_conditional_file?( split_file )  )
