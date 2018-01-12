@@ -71,14 +71,18 @@ def handle_conditional_customization( splits, json )
   number_of_codes = splits.length - 5
   conditions = splits[2..(2+number_of_codes)];
   @length_names.each do |length_name|
-    hash = {}
+    hash = json[length_name][code] || {}
     current_hash = hash
+    if( conditions.last == 't1' )
+        conditions.pop
+    end
+    
     conditions.each do |condition|
-      condition = 'default' if condition == 't1'
-      current_hash[condition] = {}
+      current_hash[condition] = current_hash[condition] || {}
       current_hash = current_hash[condition]
     end
-    current_hash['default'] = {}
+    
+    current_hash['default'] = current_hash['default'] || {}
     if( is_front?( splits ) )
       current_hash['default']['front'] = add_appropriate_layer( splits, current_hash['default']['front'])
     else
