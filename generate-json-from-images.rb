@@ -1,11 +1,11 @@
 require 'pp'
 require 'json'
-require './fp-dr1005-102'
+require './fp-js1007-102'
 
 dress = Dress.new
 file_names = ARGV.first
 
-@all_lengths = { "micro": "Micro-Mini", "knee": "Knee", "mini": "Mini", "midi": "Midi", "ankle": "Ankle", "maxi": "Maxi"}
+@all_lengths = dress.all_lengths
 
 @length_names = @all_lengths.map { |key_value| key_value.last }
 
