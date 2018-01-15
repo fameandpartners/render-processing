@@ -8,9 +8,6 @@ def build_image_file_name( base_filename, input_directory, color )
   
 end
 
-def composite_command( base_file, layer_file, output_file )
-  "composite -gravity center -quality 100 #{layer_file} #{base_file} #{output_file}"
-end
 
 
 def build_combine_files_commands( files, side, length, color, base_filename, search_directory, output_directory, temp_directory )
@@ -19,22 +16,51 @@ def build_combine_files_commands( files, side, length, color, base_filename, sea
   commands = []
   if( files.length == 1 )
     commands << "cp #{build_image_file_name( files.first, search_directory, color )} #{temp_final_file}"
+    commands << "convert -units PixelsPerInch -density 172  \"#{temp_final_file}\" -resize 800x800 \"#{temp_final_file}\""
+    commands << "mv  \"#{temp_final_file}\" \"#{output_directory}/#{final_file_name}\""
   else
-    commands << composite_command( build_image_file_name( files[0], search_directory, color ),
-                                   build_image_file_name( files[1],search_directory, color),
-                                   temp_final_file )
-    files[2..files.length].each do |layer_file|
-      commands << composite_command( temp_final_file,
-                                     build_image_file_name( layer_file,search_directory, color),
-                                     temp_final_file )
+    command = "convert #{build_image_file_name(files.first, search_directory, color)} "
+    files[1..files.length].each do |file|
+      command = "#{command} #{build_image_file_name(file, search_directory, color)} -composite "
     end
+    command = "#{command} -units PixelsPerInch -density 172 -resize 800x800 \"#{output_directory}/#{final_file_name}\""
+    commands << command
   end
   
 
-  commands << "convert -units PixelsPerInch -density 172  \"#{temp_final_file}\" -resize 800x800 \"#{temp_final_file}\""
-  commands << "mv  \"#{temp_final_file}\" \"#{output_directory}/#{final_file_name}\""
   
   return commands
+end
+
+def run( command_sets )
+  threads = []
+  semaphore = Mutex.new
+  number_of_threads = 4
+
+  (1..number_of_threads).each do |thread_num|
+    
+    threads << Thread.new do
+      commands = []
+      while( commands != nil ) do
+        semaphore.synchronize do
+          unless( command_sets.empty? )
+            commands = command_sets.pop
+          else
+            commands = nil
+          end
+        end
+        puts "(#{thread_num}): #{commands.first}"         
+        commands.each do |command|
+          results =`#{command}`
+          puts results unless results.strip.empty?
+        end
+      end
+    end
+  end
+  threads.each do |thread|
+    thread.join
+  end
+  puts Time.now
 end
 
 if( ARGV.length < 4 )
@@ -68,38 +94,12 @@ else
       
     end
   end
-  threads = []
-  semaphore = Mutex.new
-  number_of_threads = 4
-
-  (1..number_of_threads).each do |thread_num|
-    
-    threads << Thread.new do
-      commands = []
-      while( commands != nil ) do
-        semaphore.synchronize do
-          unless( command_sets.empty? )
-            commands = command_sets.pop
-          else
-            commands = nil
-          end
-        end
-        puts "(#{thread_num}): #{commands.first}"         
-        commands.each do |command|
-          results =`#{command}`
-          puts results unless results.strip.empty?
-        end
-      end
-    end
-  end
-  threads.each do |thread|
-    thread.join
-  end
-  puts Time.now
-  
+  run( command_sets )
 end
 
 
+
+  
 #convert -size 800x800 xc:transparent jumpsuit_pants_cheeky_bottom_front_0000.png -composite default_belt_front_0000.png  -composite t2_neckline_front_0000.png -composite -density 350 results.png
 
 
