@@ -49,10 +49,12 @@ def run( command_sets )
             commands = nil
           end
         end
-        puts "(#{thread_num}): #{commands.first}"         
-        commands.each do |command|
-          results =`#{command}`
-          puts results unless results.strip.empty?
+        unless( commands.nil? )
+          puts "(#{thread_num}): #{commands.first}" 
+          commands.each do |command|
+            results =`#{command}`
+            puts results unless results.strip.empty?
+          end
         end
       end
     end
@@ -61,6 +63,14 @@ def run( command_sets )
     thread.join
   end
   puts Time.now
+end
+
+def build_color( color_number )
+  if( color_number < 10 )
+    "000#{color_number}"
+  else
+    "00#{color_number}"    
+  end
 end
 
 if( ARGV.length < 4 )
@@ -73,25 +83,27 @@ else
   output_directory = ARGV[3]
   temp_directory = ARGV.last
   command_sets = []
-  CSV.foreach( csv_file, :headers => false ) do |row|
-    if( row.length > 2 )
-      command_sets << build_combine_files_commands( row[1].split( ' ' ),
-                                                    'front',
-                                                    length,
-                                                    '0000',
-                                                    row[0],
-                                                    search_directory,
-                                                    output_directory,
-                                                    temp_directory )
-      command_sets << build_combine_files_commands( row[2].split( ' ' ),
-                                                    'back',
-                                                    length,
-                                                    '0000',
-                                                    row[0],
-                                                    search_directory,
-                                                    output_directory,
-                                                    temp_directory )
-      
+  (0..14).each do |color|
+    CSV.foreach( csv_file, :headers => false ) do |row|
+      if( row.length > 2 )
+        command_sets << build_combine_files_commands( row[1].split( ' ' ),
+                                                      'front',
+                                                      length,
+                                                      build_color(color),
+                                                      row[0],
+                                                      search_directory,
+                                                      output_directory,
+                                                      temp_directory )
+        command_sets << build_combine_files_commands( row[2].split( ' ' ),
+                                                      'back',
+                                                      length,
+                                                      build_color(color),
+                                                      row[0],
+                                                      search_directory,
+                                                      output_directory,
+                                                      temp_directory )
+        
+      end
     end
   end
   run( command_sets )
