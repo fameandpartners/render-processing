@@ -1,8 +1,8 @@
 require './fp-js1007-102'
 
 dress = Dress.new
-output_directory = ARGV.first
-search_directory = ARGV.last
+output_directory = ARGV.last
+search_directory = ARGV.first
 
 def build_image_file_name( base_filename, input_directory, color )
   filename_to_search_for = "#{base_filename}_#{color}.png"
