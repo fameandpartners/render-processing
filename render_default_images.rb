@@ -33,15 +33,60 @@ def build_color( color_number )
   end
 end
 
+def run( command_sets )
+  threads = []
+  semaphore = Mutex.new
+  number_of_threads = 8
+
+  (1..number_of_threads).each do |thread_num|
+    
+    threads << Thread.new do
+      commands = []
+      while( commands != nil ) do
+        semaphore.synchronize do
+          unless( command_sets.empty? )
+            commands = command_sets.pop
+          else
+            commands = nil
+          end
+        end
+        unless( commands.nil? )
+          puts "(#{thread_num}): #{commands.first}" 
+          commands.each do |command|
+            results =`#{command}`
+            puts results unless results.strip.empty?
+          end
+        end
+      end
+    end
+  end
+  threads.each do |thread|
+    thread.join
+  end
+  puts Time.now
+end
+
+commands = []
 dress.starting_json.each do |key,value|
   (0..14).each do |color_number|
     puts value
-    puts build_combine_files_commands( value['default'][:front],
-                                  'front',
-                                  key.downcase.gsub( '-', '_' ),
-                                  build_color( color_number ),
-                                  search_directory,
-                                  output_directory
-                                )
+    commands = commands + build_combine_files_commands( value['default'][:front],
+                                                        'front',
+                                                        key.downcase.gsub( '-', '_' ),
+                                                        build_color( color_number ),
+                                                        search_directory,
+                                                        output_directory
+                                                      )
+    commands = commands + build_combine_files_commands( value['default'][:back],
+                                                        'back',
+                                                        key.downcase.gsub( '-', '_' ),
+                                                        build_color( color_number ),
+                                                        search_directory,
+                                                        output_directory
+                                                      )
+    
   end
 end
+
+
+run( commands )
