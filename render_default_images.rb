@@ -13,7 +13,7 @@ def build_image_file_name( base_filename, input_directory, color )
 end
 
 def build_combine_files_commands( files, side, length, color, search_directory, output_directory )
-  final_filename = "#{side}-default-#{length}-#{color}.png"
+  final_file_name = "#{side}-default-#{length}-#{color}.png"
   commands = []
   command = "convert #{build_image_file_name(files[:bottom], search_directory, color)} "
   [files[:belt],files[:neckline]].each do |file|
