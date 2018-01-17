@@ -15,8 +15,8 @@ end
 def build_combine_files_commands( files, side, length, color, search_directory, output_directory )
   final_filename = "#{side}-default-#{length}-#{color}.png"
   commands = []
-  command = "convert #{build_image_file_name(files['bottom'], search_directory, color)} "
-  [files['belt'],files['neckline']].each do |file|
+  command = "convert #{build_image_file_name(files[:bottom], search_directory, color)} "
+  [files[:belt],files[:neckline]].each do |file|
     command = "#{command} #{build_image_file_name(file, search_directory, color)} -composite "
     command = "#{command} -units PixelsPerInch -density 172 -resize 800x800 \"#{output_directory}/#{final_file_name}\""
     commands << command
