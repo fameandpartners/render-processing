@@ -35,7 +35,7 @@ end
 dress.starting_json.each do |key,value|
   (0..14).each do |color|
     
-    puts build_combine_files_commands( files['default']['front'],
+    puts build_combine_files_commands( value['default']['front'],
                                   'front',
                                   key.downcase.gsub( '-', '_' ),
                                   build_color( color_number ),
