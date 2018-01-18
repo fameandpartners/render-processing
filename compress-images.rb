@@ -22,7 +22,8 @@ number_of_threads = 0
 
 dress.customization_list.each do |customization_code|
   files = find_files( dress.search_directories, customization_code )
-  puts files
+  puts "#{customization_code} is empty" if files.empty?
+#  puts files
 end
 
 
