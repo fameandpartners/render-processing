@@ -35,7 +35,7 @@ end
 def run( command_sets )
   threads = []
   semaphore = Mutex.new
-  number_of_threads = 4
+  number_of_threads = 8
 
   (1..number_of_threads).each do |thread_num|
     
