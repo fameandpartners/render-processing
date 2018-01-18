@@ -6,6 +6,7 @@ def find_files( directories_to_search, customization_code )
   directories_to_search.each do |directory|
     if( to_return.empty? )
       files = Dir.glob("#{directory}/**/#{customization_code}_*.png")
+      puts "#{customization_code} = #{directory}" unless files.empty?
       to_return = files
     end
   end
