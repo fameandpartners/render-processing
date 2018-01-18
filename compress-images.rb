@@ -1,11 +1,31 @@
+require './fp-dr1002-102'
 require 'thread'
+
+def find_files( directories_to_search, customization_code )
+  to_return = []
+  directories_to_search.each do |directory|
+    if( to_return.empty? )
+      files = Dir.glob("#{directory}/**/#{customization_code}_*.png")
+      to_return = files
+    end
+  end
+
+  return to_return
+end
+
+dress = Dress.new
+
 input_directory = ARGV.first
 output_directory = ARGV.last
+number_of_threads = 0
 
-number_of_threads = 4
 
-files = Dir.glob("#{input_directory}/**/*.png")
-puts files.count
+dress.customization_list.each do |customization_code|
+  files = find_files( dress.search_directories, customization_code )
+  puts files
+end
+
+
 
 threads = []
 semaphore = Mutex.new
