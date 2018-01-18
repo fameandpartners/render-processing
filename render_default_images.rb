@@ -69,20 +69,20 @@ end
 command_set = []
 dress.starting_json.each do |key,value|
   (0..14).each do |color_number|
-    command_set = command_set + build_combine_files_commands( value['default'][:front],
-                                                        'front',
-                                                        key.downcase.gsub( '-', '_' ),
-                                                        build_color( color_number ),
-                                                        search_directory,
-                                                        output_directory
-                                                      )
-    command_set = command_set + build_combine_files_commands( value['default'][:back],
-                                                        'back',
-                                                        key.downcase.gsub( '-', '_' ),
-                                                        build_color( color_number ),
-                                                        search_directory,
-                                                        output_directory
-                                                      )
+    command_set <<  build_combine_files_commands( value['default'][:front],
+                                                  'front',
+                                                  key.downcase.gsub( '-', '_' ),
+                                                  build_color( color_number ),
+                                                  search_directory,
+                                                  output_directory
+                                                )
+    command_set << build_combine_files_commands( value['default'][:back],
+                                                 'back',
+                                                 key.downcase.gsub( '-', '_' ),
+                                                 build_color( color_number ),
+                                                 search_directory,
+                                                 output_directory
+                                               )
     
   end
 end
