@@ -66,18 +66,17 @@ def run( command_sets )
   puts Time.now
 end
 
-commands = []
+command_set = []
 dress.starting_json.each do |key,value|
   (0..14).each do |color_number|
-    puts value
-    commands = commands + build_combine_files_commands( value['default'][:front],
+    command_set = command_set + build_combine_files_commands( value['default'][:front],
                                                         'front',
                                                         key.downcase.gsub( '-', '_' ),
                                                         build_color( color_number ),
                                                         search_directory,
                                                         output_directory
                                                       )
-    commands = commands + build_combine_files_commands( value['default'][:back],
+    command_set = command_set + build_combine_files_commands( value['default'][:back],
                                                         'back',
                                                         key.downcase.gsub( '-', '_' ),
                                                         build_color( color_number ),
@@ -89,4 +88,4 @@ dress.starting_json.each do |key,value|
 end
 
 
-run( commands )
+run( command_set )
