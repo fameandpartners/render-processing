@@ -30,7 +30,7 @@ end
 dress = Dress.new
 
 output_directory = ARGV.first
-number_of_threads = 0
+number_of_threads = 8
 
 
 file_set = []
