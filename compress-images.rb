@@ -5,7 +5,7 @@ def find_files( directories_to_search, customization_code )
   return find_specific_files( "#{customization_code}_*.png" )
 end
 
-def find_specific_files( file_pattern )
+def find_specific_files( directories_to_search, file_pattern )
   to_return = []
   directories_to_search.each do |directory|
     if( to_return.empty? )
@@ -18,11 +18,11 @@ def find_specific_files( file_pattern )
   return to_return
 end
 
-def find_files_for_defaults( data )
+def find_files_for_defaults( data, directories )
   to_return = []
-  to_return += find_files_for_defaults( "#{data[:bottom]}_*.png" )
-  to_return += find_files_for_defaults( "#{data[:belt]}_*.png" )
-  to_return += find_files_for_defaults( "#{data[:neckline]}_*.png" )
+  to_return += find_files_for_defaults( directories, "#{data[:bottom]}_*.png" )
+  to_return += find_files_for_defaults( directories, "#{data[:belt]}_*.png" )
+  to_return += find_files_for_defaults( directories, "#{data[:neckline]}_*.png" )
 
   return to_return
 end
@@ -42,8 +42,8 @@ dress.customization_list.each do |customization_code|
 end
 
 dress.starting_json.each do |length, value|
-  file_set += find_files_for_defaults( value['default'][:front] )
-  file_set += find_files_for_defaults( value['default'][:back] )
+  file_set += find_files_for_defaults( value['default'][:front], dress.search_directories )
+  file_set += find_files_for_defaults( value['default'][:back], dress.search_directories )
 end
 
 puts file_set
