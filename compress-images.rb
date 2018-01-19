@@ -2,14 +2,27 @@ require './fp-dr1002-102'
 require 'thread'
 
 def find_files( directories_to_search, customization_code )
+  return find_specific_files( "#{customization_code}_*.png" )
+end
+
+def find_specific_files( file_pattern )
   to_return = []
   directories_to_search.each do |directory|
     if( to_return.empty? )
-      files = Dir.glob("#{directory}/**/#{customization_code}_*.png")
-      puts "#{customization_code} = #{directory}" unless files.empty?
+      files = Dir.glob("#{directory}/**/#{file_pattern}")
       to_return = files
     end
   end
+  
+  raise "No files for file pattern #{file_pattern}"  if to_return.empty?
+  return to_return
+end
+
+def find_files_for_defaults( data )
+  to_return = []
+  to_return += find_files_for_defaults( "#{data[:bottom]}_*.png" )
+  to_return += find_files_for_defaults( "#{data[:belt]}_*.png" )
+  to_return += find_files_for_defaults( "#{data[:neckline]}_*.png" )
 
   return to_return
 end
@@ -21,13 +34,19 @@ output_directory = ARGV.last
 number_of_threads = 0
 
 
+file_set = []
 dress.customization_list.each do |customization_code|
   files = find_files( dress.search_directories, customization_code )
-  puts "#{customization_code} is empty" if files.empty?
-#  puts files
+  raise "#{customization_code} is empty" if files.empty?
+  file_set = file_set + files
 end
 
+dress.starting_json.each do |length, value|
+  file_set += find_files_for_defaults( value['default'][:front] )
+  file_set += find_files_for_defaults( value['default'][:back] )
+end
 
+puts file_set
 
 threads = []
 semaphore = Mutex.new
