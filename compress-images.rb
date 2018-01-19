@@ -29,8 +29,7 @@ end
 
 dress = Dress.new
 
-input_directory = ARGV.first
-output_directory = ARGV.last
+output_directory = ARGV.first
 number_of_threads = 0
 
 
@@ -46,8 +45,8 @@ dress.starting_json.each do |length, value|
   file_set += find_files_for_defaults( value['default'][:back], dress.search_directories )
 end
 
-puts file_set
 
+files = file_set
 threads = []
 semaphore = Mutex.new
 
@@ -67,9 +66,9 @@ semaphore = Mutex.new
       end
       unless file_name.nil?
         puts "(#{thread_num}): #{file_name}"         
-        directory_name = "/home/ubuntu/s3/renders/#{file_name.split( '_' ).first.downcase}"
+        directory_name = "#{output_directory}/#{file_name.split( '_' ).first.downcase}"
         Dir.mkdir(directory_name) unless File.exists?(directory_name)
-        puts `convert -units PixelsPerInch -density 172 "#{directory_and_file_name}" -resize 800x800 "#{directory_name}/#{file_name.downcase}"`
+        `convert -units PixelsPerInch -density 172 "#{directory_and_file_name}" -resize 800x800 "#{directory_name}/#{file_name.downcase}"`
       end
     end
   end
