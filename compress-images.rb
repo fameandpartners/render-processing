@@ -43,6 +43,7 @@ dress.customization_list.each do |customization_code|
 end
 
 dress.starting_json.each do |length, value|
+  puts value['default']
   file_set += find_files_for_defaults( value['default'][:front], dress.search_directories )
   file_set += find_files_for_defaults( value['default'][:back], dress.search_directories )
 end
