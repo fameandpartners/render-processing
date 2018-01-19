@@ -2,7 +2,7 @@ require './fp-dr1002-102'
 require 'thread'
 
 def find_files( directories_to_search, customization_code )
-  return find_specific_files( "#{customization_code}_*.png" )
+  return find_specific_files( directories_to_search, "#{customization_code}_*.png" )
 end
 
 def find_specific_files( directories_to_search, file_pattern )
