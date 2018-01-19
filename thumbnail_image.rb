@@ -1,4 +1,5 @@
-input_directory = ARGV.first
+base_director  = ARGV.first
+list_of_files = ARGV[1]
 output_directory = ARGV.last
 
 def run( command_sets )
@@ -39,7 +40,9 @@ Dir.mkdir("#{output_directory}/bottom-crop") unless File.exists?("#{output_direc
 Dir.mkdir("#{output_directory}/top-crop") unless File.exists?("#{output_directory}/top-crop")
 
 commands = []
-Dir.glob("#{input_directory}/*.png").each do |filename|
+File.readlines( list_of_files ).each do |file_line|
+  filename = "#{base_director}/#{file_line.split( ' ' ).last}"
+  puts filename
   command_set = []
   output_file_name = filename.split( '/' ).last
   command_set << "convert  -trim  \"#{filename}\"  -resize x142 -background transparent -gravity Center -extent 142x142! \"#{output_directory}/142x142/#{output_file_name}\""
@@ -48,4 +51,4 @@ Dir.glob("#{input_directory}/*.png").each do |filename|
   commands << command_set
 end
 
-run( command_set )
+#run( command_set )
