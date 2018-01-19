@@ -50,4 +50,4 @@ File.readlines( list_of_files ).each do |file_line|
   commands << command_set
 end
 
-run( command_set )
+run( commands )
