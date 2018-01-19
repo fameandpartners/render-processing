@@ -20,10 +20,9 @@ end
 
 def find_files_for_defaults( data, directories )
   to_return = []
-  puts data[:bottom]
-  to_return += find_files_for_defaults( directories, "#{data[:bottom]}_*.png" )
-  to_return += find_files_for_defaults( directories, "#{data[:belt]}_*.png" )
-  to_return += find_files_for_defaults( directories, "#{data[:neckline]}_*.png" )
+  to_return += find_specific_files( directories, "#{data[:bottom]}_*.png" )
+  to_return += find_specific_files( directories, "#{data[:belt]}_*.png" )
+  to_return += find_specific_files( directories, "#{data[:neckline]}_*.png" )
 
   return to_return
 end
@@ -43,7 +42,6 @@ dress.customization_list.each do |customization_code|
 end
 
 dress.starting_json.each do |length, value|
-  puts value['default']
   file_set += find_files_for_defaults( value['default'][:front], dress.search_directories )
   file_set += find_files_for_defaults( value['default'][:back], dress.search_directories )
 end
