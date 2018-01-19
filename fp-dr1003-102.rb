@@ -12,7 +12,7 @@ class Dress
     @customization_list = %w( t1 t8 t9 t37 t40 t41 t42 t43 t54 b3 b5 b14 b16 b19 a1 a5 a6 ) 
     @starting_json = Hash.new { |hash,key| hash[key] = Hash.new {|hash2,key2| hash2[key2] = Hash.new } }
     @all_lengths = { "micro": "Micro-Mini", "knee": "Knee", "mini": "Mini", "midi": "Midi", "ankle": "Ankle", "maxi": "Maxi"}
-    @search_directories = ["/home/ubuntu/Dropbox/renderfiles/Bridesmaid Collection/11. Models and Customisations/Two Piece/Render PNGs/Front"]
+    @search_directories = ["/home/ubuntu/Dropbox/renderfiles/Bridesmaid Collection/11. Models and Customisations/Two Piece/Render PNGs"]
     
     @starting_json['Micro-Mini']['default'] = { "front":
                                                   {
