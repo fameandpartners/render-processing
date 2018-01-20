@@ -1,21 +1,19 @@
 require 'pp'
 require 'json'
-require './fp-js1007-102'
+require './fp-dr1003-102'
 
 dress = Dress.new
 file_names = ARGV.first
 
 @all_lengths = dress.all_lengths
-
 @length_names = @all_lengths.map { |key_value| key_value.last }
 
 def is_conditional_file?( splits )
   splits[1] == 'for'
 end
 
-def is_length_specific_file?( splits )
-  lengths = ['ankle', 'cheeky', 'full', 'knee', 'maxi', 'micro', 'midi', 'mini','short']
-  return lengths.index( splits[1] ) != nil
+def is_length_specific_file?( splits, index = 1 )
+  return @all_lengths[splits[index].to_sym] != nil
 end
 
 def is_default?( splits )
@@ -69,15 +67,32 @@ def handle_customization_for_specific_length( splits, json, position )
     json
 end
 
+def determine_number_of_conditional_codes( splits )
+  to_return = 0
+  position = 2
+  while( splits[position].length < 4 || splits[position] == 'base' || splits[position] == 'default' )
+    to_return += 1
+    position += 1
+  end
+
+  to_return
+end
+
+
 def handle_conditional_customization( splits, json )
   code = splits.first
-  number_of_codes = splits.length - 5
-  conditions = splits[2..(2+number_of_codes)];
-  @length_names.each do |length_name|
+  number_of_codes = determine_number_of_conditional_codes( splits )
+  conditions = splits[2..(1+number_of_codes)];
+  lengths = @length_names
+  if( is_length_specific_file?( splits, 2 + number_of_codes ) )
+    lengths = [ @all_lengths[splits[2 + number_of_codes].to_sym] ]
+  end
+
+  lengths.each do |length_name|
     hash = json[length_name][code] || {}
     current_hash = hash
-    if( conditions.last == 't1' )
-        conditions.pop
+    if( conditions.last == 't1' || conditions.last == 'b4' || conditions.last == 'base')
+      conditions.pop
     end
     
     conditions.each do |condition|
@@ -93,7 +108,6 @@ def handle_conditional_customization( splits, json )
     end
     json[length_name][code] = hash
   end
-  
   json
 end
 
@@ -106,7 +120,6 @@ File.readlines( file_names ).each do |file|
   split_file = file_without_extenions.split( '_' )  
   split_file = split_file[0..split_file.length - 2 ] #lose the color
   filename_without_color = split_file.join( '_' )
-
   if( split_file.count > 2 &&  dress.customization_list.index( split_file.first ) != nil )
     unless( processed_files.index( filename_without_color ) )
       processed_files << filename_without_color
