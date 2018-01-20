@@ -1,8 +1,23 @@
 require 'csv'
+require './fp-dr1003-102'
 
-def build_image_file_name( base_filename, input_directory, color )
+
+def find_specific_files( directories_to_search, file_pattern )
+  to_return = []
+  directories_to_search.each do |directory|
+    if( to_return.empty? )
+      files = Dir.glob("#{directory}/**/#{file_pattern}")
+      to_return = files
+    end
+  end
+  
+  raise "No files for file pattern #{file_pattern}"  if to_return.empty?
+  return to_return
+end
+
+def build_image_file_name( base_filename, input_directories, color )
   filename_to_search_for = "#{base_filename}_#{color}.png"
-  results = Dir.glob("#{input_directory}/**/#{filename_to_search_for}")
+  results = find_specific_files( input_directories, filename_to_search_for )
   raise "unknown file #{filename_to_search_for}" if results.empty?
   "\"#{results.first}\""
   
@@ -10,18 +25,18 @@ end
 
 
 
-def build_combine_files_commands( files, side, length, color, base_filename, search_directory, output_directory, temp_directory )
+def build_combine_files_commands( files, side, length, color, base_filename, search_directories, output_directory, temp_directory )
   final_file_name = "#{base_filename.split( '-' ).sort.join('-')}-#{length}-#{side}-#{color}.png"
   temp_final_file = "\"#{temp_directory}/#{final_file_name}\""
   commands = []
   if( files.length == 1 )
-    commands << "cp #{build_image_file_name( files.first, search_directory, color )} #{temp_final_file}"
+    commands << "cp #{build_image_file_name( files.first, search_directories, color )} #{temp_final_file}"
     commands << "convert -units PixelsPerInch -density 172  \"#{temp_final_file}\" -resize 800x800 \"#{temp_final_file}\""
     commands << "mv  \"#{temp_final_file}\" \"#{output_directory}/#{final_file_name}\""
   else
-    command = "convert #{build_image_file_name(files.first, search_directory, color)} "
+    command = "convert #{build_image_file_name(files.first, search_directories, color)} "
     files[1..files.length].each do |file|
-      command = "#{command} #{build_image_file_name(file, search_directory, color)} -composite "
+      command = "#{command} #{build_image_file_name(file, search_directories, color)} -composite "
     end
     command = "#{command} -units PixelsPerInch -density 172 -resize 800x800 \"#{output_directory}/#{final_file_name}\""
     commands << command
@@ -73,14 +88,15 @@ def build_color( color_number )
   end
 end
 
-if( ARGV.length < 4 )
-  puts "usage: ruby squash.rb <CSV> <LENGTH> <SEARCH DIRECTORY> <OUTPUT DIRECTORY> <TEMP DIRECTORY>"
+if( ARGV.length < 3 )
+  puts "usage: ruby squash.rb <CSV> <LENGTH> <OUTPUT DIRECTORY> <TEMP DIRECTORY>"
 else
   puts Time.now
+  dress = Dress.new
+  search_directories = dress.search_directories
   csv_file = ARGV.first
   length = ARGV[1]
-  search_directory = ARGV[2]
-  output_directory = ARGV[3]
+  output_directory = ARGV[2]
   temp_directory = ARGV.last
   command_sets = []
   (0..14).each do |color|
@@ -91,7 +107,7 @@ else
                                                       length,
                                                       build_color(color),
                                                       row[0],
-                                                      search_directory,
+                                                      search_directories,
                                                       output_directory,
                                                       temp_directory )
         command_sets << build_combine_files_commands( row[2].split( ' ' ),
@@ -99,7 +115,7 @@ else
                                                       length,
                                                       build_color(color),
                                                       row[0],
-                                                      search_directory,
+                                                      search_directories,
                                                       output_directory,
                                                       temp_directory )
         
