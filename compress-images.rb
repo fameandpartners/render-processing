@@ -34,16 +34,16 @@ number_of_threads = 8
 
 
 file_set = []
-['t40'].each do |customization_code|
+['b19'].each do |customization_code|
   files = find_files( dress.search_directories, customization_code )
   raise "#{customization_code} is empty" if files.empty?
   file_set = file_set + files
 end
 
-dress.starting_json.each do |length, value|
-  file_set += find_files_for_defaults( value['default'][:front], dress.search_directories )
-  file_set += find_files_for_defaults( value['default'][:back], dress.search_directories )
-end
+#dress.starting_json.each do |length, value|
+#  file_set += find_files_for_defaults( value['default'][:front], dress.search_directories )
+#  file_set += find_files_for_defaults( value['default'][:back], dress.search_directories )
+#end
 
 
 files = file_set
