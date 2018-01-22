@@ -1,6 +1,6 @@
 require 'pp'
 require 'json'
-require './fp-dr1003-102'
+require './fp-dr1002-102'
 
 dress = Dress.new
 file_names = ARGV.first
