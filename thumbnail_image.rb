@@ -44,7 +44,7 @@ File.readlines( list_of_files ).each do |file_line|
   filename = "#{base_director}/#{file_line.split( ' ' ).last}"
   command_set = []
   output_file_name = filename.split( '/' ).last
-  command_set << "convert  -trim  \"#{filename}\"  -resize x142 -background transparent -gravity Center -extent 142x142! \"#{output_directory}/142x142/#{output_file_name}\""
+  command_set << "convert  -trim  \"#{filename}\"  -resize 142x142 -background transparent -gravity Center -extent 142x142! \"#{output_directory}/142x142/#{output_file_name}\""
   command_set << "convert  -trim \"#{filename}\"  -chop '0x33%' +repage -resize 142x -background transparent -gravity Center -extent 142x142! \"#{output_directory}/bottom-crop/#{output_file_name}\"" 
   command_set << "convert  -trim  \"#{filename}\" -gravity SouthWest -chop '0x33%' +repage -resize 142x -background transparent -gravity Center -extent 142x142! \"#{output_directory}/top-crop/#{output_file_name}\""
   commands << command_set
