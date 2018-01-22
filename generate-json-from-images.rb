@@ -32,7 +32,6 @@ def add_appropriate_layer( splits, hash )
   hash = {} if hash.nil?
   location_position = splits.length - 2
   location = splits[location_position]
-  
   if( location == 'behind' || location == 'infront' || location == 'belt' )
     location ='behindbelt' if location == 'belt'
     hash[location] = [makefilename( splits )]
@@ -47,9 +46,9 @@ def handle_customization_for_all_lengths( splits,json )
     code = splits.first
     json[length_name][code]['default'] = {} if( json[length_name][code]['default'].nil? )
     if( is_front?( splits ) )
-      json[length_name][code]['default']['front'] = add_appropriate_layer( splits, json[length_name]['default']['front'] )
+      json[length_name][code]['default']['front'] = add_appropriate_layer( splits, json[length_name][code]['default']['front'] )
     else
-      json[length_name][code]['default']['back'] = add_appropriate_layer( splits, json[length_name]['default']['back'] )
+      json[length_name][code]['default']['back'] = add_appropriate_layer( splits, json[length_name][code]['default']['back'] )
     end
   end
   json
