@@ -13,7 +13,7 @@ def build_image_file_name( base_filename, input_directory, color )
 end
 
 def build_combine_files_commands( files, side, length, color, search_directory, output_directory )
-  final_file_name = "#{side}-default-#{length}-#{color}.png"
+  final_file_name = "default-#{length}-#{side}-#{color}.png"
   commands = []
   command = "convert #{build_image_file_name(files[:bottom], search_directory, color)} "
   [files[:belt],files[:neckline]].each do |file|
@@ -68,7 +68,7 @@ end
 
 command_set = []
 dress.starting_json.each do |key,value|
-  (0..14).each do |color_number|
+  (0..dress.number_of_colors).each do |color_number|
     command_set <<  build_combine_files_commands( value['default'][:front],
                                                   'front',
                                                   key.downcase.gsub( '-', '_' ),
