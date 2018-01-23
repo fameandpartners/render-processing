@@ -1,4 +1,4 @@
-require './fp-js1007-102'
+require './fp-dr1003-102'
 
 dress = Dress.new
 output_directory = ARGV.first
