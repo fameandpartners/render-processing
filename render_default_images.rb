@@ -1,4 +1,4 @@
-require './fp-dr1005-102'
+require './fp-js1007-102'
 
 dress = Dress.new
 output_directory = ARGV.first
@@ -18,10 +18,10 @@ def build_combine_files_commands( files, side, length, color, search_directory, 
   command = "convert #{build_image_file_name(files[:bottom], search_directory, color)} "
   [files[:belt],files[:neckline]].each do |file|
     command = "#{command} #{build_image_file_name(file, search_directory, color)} -composite "
-    command = "#{command} -units PixelsPerInch -density 172 -resize 800x800 \"#{output_directory}/#{final_file_name}\""
-    commands << command
+    
   end
-  
+  command = "#{command} -units PixelsPerInch -density 172 -resize 800x800 \"#{output_directory}/#{final_file_name}\""
+  commands << command  
   return commands
 end
 
