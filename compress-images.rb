@@ -39,6 +39,8 @@ dress.customization_list.each do |customization_code|
     files = find_files( dress.search_directories, customization_code )
     raise "#{customization_code} is empty" if files.empty?
     file_set = file_set + files
+  else
+    puts "Ignoring #{customization_code}"
   end
 end
 
