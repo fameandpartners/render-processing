@@ -20,7 +20,6 @@ end
 
 def find_files_for_defaults( data, directories )
   to_return = []
-  puts data
   to_return += find_specific_files( directories, "#{data[:bottom]}_*.png" )
   to_return += find_specific_files( directories, "#{data[:belt]}_*.png" )
   to_return += find_specific_files( directories, "#{data[:neckline]}_*.png" )
@@ -36,9 +35,11 @@ number_of_threads = 8
 
 file_set = []
 dress.customization_list.each do |customization_code|
-  files = find_files( dress.search_directories, customization_code )
-  raise "#{customization_code} is empty" if files.empty?
-  file_set = file_set + files
+  if( dress.ignorable_customizations.index( customization_code ).nil? )
+    files = find_files( dress.search_directories, customization_code )
+    raise "#{customization_code} is empty" if files.empty?
+    file_set = file_set + files
+  end
 end
 
 dress.starting_json.each do |length, value|
