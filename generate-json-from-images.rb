@@ -90,7 +90,7 @@ def handle_conditional_customization( splits, json )
   lengths.each do |length_name|
     hash = json[length_name][code] || {}
     current_hash = hash
-    if( conditions.last == 't1' || conditions.last == 'b4' || conditions.last == 'base')
+    if( conditions.last == 'base')
       conditions.pop
     end
     
