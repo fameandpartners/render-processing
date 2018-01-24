@@ -1,5 +1,5 @@
 require 'csv'
-require './fp-dr1002-102'
+require './fp-js1007-102'
 
 
 def find_specific_files( directories_to_search, file_pattern )
@@ -99,7 +99,7 @@ else
   output_directory = ARGV[2]
   temp_directory = ARGV.last
   command_sets = []
-  (0..dress.number_of_colors).each do |color|
+  (15..dress.number_of_colors).each do |color|
     CSV.foreach( csv_file, :headers => false ) do |row|
       if( row.length > 2 )
         command_sets << build_combine_files_commands( row[1].split( ' ' ),
