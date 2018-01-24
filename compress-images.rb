@@ -20,6 +20,7 @@ end
 
 def find_files_for_defaults( data, directories )
   to_return = []
+  puts data
   to_return += find_specific_files( directories, "#{data[:bottom]}_*.png" )
   to_return += find_specific_files( directories, "#{data[:belt]}_*.png" )
   to_return += find_specific_files( directories, "#{data[:neckline]}_*.png" )
