@@ -1,6 +1,7 @@
 require 'pp'
 require 'json'
 require './fp-dr1009-102'
+require 'active_support/core_ext/hash/indifferent_access'
 
 dress = Dress.new
 file_names = ARGV.first
@@ -57,6 +58,7 @@ def handle_customization_for_specific_length( splits, json, position )
     code = splits.first
     length_name = @all_lengths[splits[position].to_sym]
     json[length_name][code]['default'] = {}  if( json[length_name][code]['default'].nil? )
+    
     if( is_front?( splits ) )
       json[length_name][code]['default']['front'] = add_appropriate_layer( splits, json[length_name]['default']['front'])
     else
@@ -77,8 +79,13 @@ def determine_number_of_conditional_codes( splits )
 end
 
 
-def handle_conditional_customization( splits, json )
+def deep_copy(o)
+  HashWithIndifferentAccess.new( JSON.load( o.to_json ) )
+end
+
+def handle_conditional_customization( splits, json, starting_state )
   code = splits.first
+  should_print =  false
   number_of_codes = determine_number_of_conditional_codes( splits )
   conditions = splits[2..(1+number_of_codes)];
   lengths = @length_names
@@ -87,24 +94,31 @@ def handle_conditional_customization( splits, json )
   end
 
   lengths.each do |length_name|
-    hash = json[length_name][code] || {}
+    puts "#{length_name}" if should_print
+    hash = deep_copy(json[length_name][code]) || HashWithIndifferentAccess.new( { 'default': deep_copy( starting_state[length_name] )['default'] } )
+    puts "hash = #{hash}" if should_print
+    last_hash = HashWithIndifferentAccess.new( { 'default': deep_copy( starting_state[length_name] )['default'] } )
+    puts "last_hash = #{last_hash}" if should_print
     current_hash = hash
     if( conditions.last == 'base')
       conditions.pop
     end
-    
-    conditions.each do |condition|
-      current_hash[condition] = current_hash[condition] || {}
-      current_hash = current_hash[condition]
+    conditions.sort.each do |condition|
+      puts "condition = #{condition}" if should_print
+      current_hash[condition] =  current_hash[condition] || HashWithIndifferentAccess.new({ 'default': last_hash['default'] } )
+      last_hash =  current_hash
+      current_hash =  current_hash[condition]
+      puts "conditions current_hash = #{current_hash}" if should_print
     end
-    
-    current_hash['default'] = current_hash['default'] || {}
+
+    current_hash['default'] = deep_copy(current_hash['default']) || deep_copy( starting_state[length_name] )['default']
+    puts "final current hash = #{current_hash}" if should_print
     if( is_front?( splits ) )
-      current_hash['default']['front'] = add_appropriate_layer( splits, current_hash['default']['front'])
+      current_hash['default']['front'] = add_appropriate_layer( splits, deep_copy( current_hash['default']['front'] ))
     else
-      current_hash['default']['back'] = add_appropriate_layer( splits, current_hash['default']['back'] )
+      current_hash['default']['back'] = add_appropriate_layer( splits, deep_copy( current_hash['default']['back'] ) )
     end
-    json[length_name][code] = hash
+    json[length_name][code] = deep_copy( hash )
   end
   json
 end
@@ -122,7 +136,7 @@ File.readlines( file_names ).each do |file|
     unless( processed_files.index( filename_without_color ) )
       processed_files << filename_without_color
       if( is_conditional_file?( split_file )  )
-        final_json = handle_conditional_customization( split_file, final_json )
+        final_json = handle_conditional_customization( split_file, final_json, dress.starting_json )
       elsif( is_length_specific_file?( split_file ) )
         final_json = handle_customization_for_specific_length( split_file, final_json, 1 )
       else
