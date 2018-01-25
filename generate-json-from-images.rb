@@ -95,9 +95,9 @@ def handle_conditional_customization( splits, json, starting_state )
 
   lengths.each do |length_name|
     puts "#{length_name}" if should_print
-    hash = deep_copy(json[length_name][code]) || HashWithIndifferentAccess.new( { 'default': deep_copy( starting_state[length_name] )['default'] } )
+    hash = deep_copy(json[length_name][code]) || HashWithIndifferentAccess.new()
     puts "hash = #{hash}" if should_print
-    last_hash = HashWithIndifferentAccess.new( { 'default': deep_copy( starting_state[length_name] )['default'] } )
+    last_hash = HashWithIndifferentAccess.new(  )
     puts "last_hash = #{last_hash}" if should_print
     current_hash = hash
     if( conditions.last == 'base')
@@ -111,7 +111,7 @@ def handle_conditional_customization( splits, json, starting_state )
       puts "conditions current_hash = #{current_hash}" if should_print
     end
 
-    current_hash['default'] = deep_copy(current_hash['default']) || deep_copy( starting_state[length_name] )['default']
+    current_hash['default'] = deep_copy(current_hash['default']) || HashWithIndifferentAccess.new()
     puts "final current hash = #{current_hash}" if should_print
     if( is_front?( splits ) )
       current_hash['default']['front'] = add_appropriate_layer( splits, deep_copy( current_hash['default']['front'] ))
