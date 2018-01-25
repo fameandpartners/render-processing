@@ -99,7 +99,7 @@ else
   output_directory = ARGV[2]
   temp_directory = ARGV.last
   command_sets = []
-  (15..dress.number_of_colors).each do |color|
+  (0..dress.number_of_colors).each do |color|
     CSV.foreach( csv_file, :headers => false ) do |row|
       if( row.length > 2 )
         command_sets << build_combine_files_commands( row[1].split( ' ' ),

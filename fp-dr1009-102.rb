@@ -23,9 +23,9 @@ class Dress
                                                   },
                                                 "back":
                                                   {
-                                                    "bottom": "base_neckline_back",
+                                                    "neckline": "base_neckline_back",
                                                     "belt": "base_belt_back",
-                                                    "neckline": "base_micro_mini_bottom_back"
+                                                    "bottom": "base_micro_mini_bottom_back"
                                                   }
                                               }
     
@@ -37,9 +37,9 @@ class Dress
                                             },
                                           "back":
                                             {
-                                              "bottom": "base_neckline_back",
+                                              "neckline": "base_neckline_back",
                                              "belt": "base_belt_back",
-                                             "neckline": "base_midi_bottom_back"
+                                             "bottom": "base_midi_bottom_back"
                                             }
                                         }
     
@@ -51,9 +51,9 @@ class Dress
                                             },
                                           "back":
                                             {
-                                              "bottom": "base_neckline_back",
+                                              "neckline": "base_neckline_back",
                                              "belt": "base_belt_back",
-                                              "neckline": "base_knee_bottom_back"
+                                              "bottom": "base_knee_bottom_back"
                                             }
                                         }
 
@@ -67,9 +67,9 @@ class Dress
                                             },
                                           "back":
                                             {
-                                              "bottom": "base_neckline_back",
+                                              "neckline": "base_neckline_back",
                                              "belt": "base_belt_back",
-                                              "neckline": "base_midi_bottom_back"
+                                              "bottom": "base_midi_bottom_back"
                                             }
                                         }
     
@@ -81,9 +81,9 @@ class Dress
                                              },
                                            "back":
                                              {
-                                               "bottom": "base_neckline_back",
+                                               "neckline": "base_neckline_back",
                                               "belt": "base_belt_back",
-                                              "neckline": "base_ankle_bottom_back"
+                                              "bottom": "base_ankle_bottom_back"
                                              }
                                          }
     
@@ -95,9 +95,9 @@ class Dress
                                             },
                                           "back":
                                             {
-                                              "bottom": "base_neckline_back",
+                                              "bottom": "base_maxi_bottom_back",
                                              "belt": "base_belt_back",
-                                              "neckline": "base_maxi_bottom_back"
+                                              "neckline": "base_neckline_back"
                                             }
                                         }
 

@@ -32,8 +32,7 @@ def add_appropriate_layer( splits, hash )
   hash = {} if hash.nil?
   location_position = splits.length - 2
   location = splits[location_position]
-  if( location == 'behind' || location == 'infront' || location == 'belt' )
-    location ='behindbelt' if location == 'belt'
+  if( location == 'behind' || location == 'infront' || location == 'behindbelt' )
     hash[location] = [makefilename( splits )]
   else
     hash[location] = makefilename( splits )
