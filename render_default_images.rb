@@ -16,7 +16,7 @@ def build_combine_files_commands( files, side, length, color, search_directory, 
   final_file_name = "default-#{length}-#{side}-#{color}.png"
   commands = []
   command = "convert #{build_image_file_name(files[:bottom], search_directory, color)} "
-  [files[:belt],files[:neckline]].compact..each do |file|
+  [files[:belt],files[:neckline]].compact.each do |file|
     command = "#{command} #{build_image_file_name(file, search_directory, color)} -composite "
     
   end
