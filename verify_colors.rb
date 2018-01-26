@@ -18,7 +18,7 @@ directory = dress.search_directories.first
   file_list = file_list.uniq
 
   file_list.each do |part_of_file|
-    puts "Missing colors for #{part_of_file}" unless Dir.glob("#{directory}/#{subdirectory}/#{part_of_file}_00*.png").count == dress.number_of_colors
+    puts "Missing colors for #{part_of_file}" unless Dir.glob("#{directory}/#{subdirectory}/#{part_of_file}_00*.png").count == (dress.number_of_colors + 1)
   end
 end
 
