@@ -5,8 +5,10 @@ class Dress
   attr_reader :all_lengths
   attr_reader :search_directories
   attr_reader :number_of_colors
+  attr_reader :ignorable_customizations
   
   def initialize
+    @name = "Column Dress"
     @customization_list = ['t2', 't3', 't4', 't6', 't22', 't27', 't29', 't31', 't33', 't35', 't44', 't51', 't58', 't60', 'b1', 'b3', 'b13', 'b20', 'a1', 'a2', 'a5']
     @number_of_colors = 17;    
     @starting_json = Hash.new { |hash,key| hash[key] = Hash.new {|hash2,key2| hash2[key2] = Hash.new } }
