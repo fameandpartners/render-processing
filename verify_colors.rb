@@ -6,10 +6,12 @@ directory = dress.search_directories.first
 
 ['Front', 'Back' ].each do |subdirectory|
   file_list = []
-  
+
+  puts "#{directory}/#{subdirectory}/*.png"
   files = Dir.glob("#{directory}/#{subdirectory}/*.png")
 
   files.each do |file|
+    puts file
     split_file = file.split( '.' ).first.split( '_' )
     split_file.pop
     file_list << split_file.join( '_' )
