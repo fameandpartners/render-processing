@@ -12,7 +12,7 @@ directory = dress.search_directories.first
 
   files.each do |file|
     puts file
-    split_file = split( '/' ).last.file.split( '.' ).first.split( '_' )
+    split_file = file.split( '/' ).last.split( '.' ).first.split( '_' )
     split_file.pop
     file_list << split_file.join( '_' )
   end
