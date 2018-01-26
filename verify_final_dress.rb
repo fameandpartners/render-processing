@@ -17,7 +17,7 @@ dress = Dress.new
   puts "Verify #{image_size}"
   results = `aws s3 ls s3://mkt-fameandpartners/renders/composites/#{dress_id.downcase}/#{image_size} --recursive`
   results = results.split("\n")
-  puts "Total results: #{results.length}'
+  puts "Total results: #{results.length}"
   verify_results( dress,results, image_size )
 end
 
