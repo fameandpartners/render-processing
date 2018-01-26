@@ -10,6 +10,7 @@ class Dress
   def initialize
     @name = "Column Dress"
     @customization_list = ['t2', 't3', 't4', 't6', 't22', 't27', 't29', 't31', 't33', 't35', 't44', 't51', 't58', 't60', 'b1', 'b3', 'b13', 'b20', 'a1', 'a2', 'a5']
+    @ignorable_customizations = []
     @number_of_colors = 17;    
     @starting_json = Hash.new { |hash,key| hash[key] = Hash.new {|hash2,key2| hash2[key2] = Hash.new } }
     @search_directories = ["/home/ubuntu/Dropbox/renderfiles/Bridesmaid Collection/11. Models and Customisations/The Column Dress and Jump Suit/Rendered PNG's/TAKE SYSTEM 6K"]
