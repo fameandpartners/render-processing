@@ -60,10 +60,11 @@ def handle_customization_for_specific_length( splits, json, position )
     json[length_name][code]['default'] = {}  if( json[length_name][code]['default'].nil? )
     
     if( is_front?( splits ) )
-      json[length_name][code]['default']['front'] = add_appropriate_layer( splits, json[length_name]['default']['front'])
+      json[length_name][code]['default']['front'] = add_appropriate_layer( splits, json[length_name][code]['default']['front'])
     else
-      json[length_name][code]['default']['back'] = add_appropriate_layer( splits, json[length_name]['default']['back'] )
+      json[length_name][code]['default']['back'] = add_appropriate_layer( splits, json[length_name][code]['default']['back'] )
     end
+    
     json
 end
 
