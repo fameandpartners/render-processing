@@ -78,11 +78,13 @@ class Dress
                                          }
     
     @starting_json['Maxi']['default'] = { "front":
-                                            {
-                                            },
-                                          "back":
-                                            {
-                                            }
+                                             {
+                                              "neckline": "base_neckline_front"
+                                             },
+                                           "back":
+                                             {
+                                               "neckline": "base_neckline_back"
+                                             }
                                         }
 
   end
