@@ -1,4 +1,4 @@
-require './fp-dr1009-102'
+require "./#{ARGV.first}"
 require 'thread'
 
 def find_files( directories_to_search, customization_code )
@@ -29,7 +29,7 @@ end
 
 dress = Dress.new
 
-output_directory = ARGV.first
+output_directory = ARGV[1]
 customization_id = ARGV.last
 number_of_threads = 8
 

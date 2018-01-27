@@ -1,10 +1,10 @@
 require 'pp'
 require 'json'
-require './fp-dr1009-102'
+require "./#{ARGV.first}"
 require 'active_support/core_ext/hash/indifferent_access'
 
 dress = Dress.new
-file_names = ARGV.first
+file_names = ARGV.last
 
 @all_lengths = dress.all_lengths
 @length_names = @all_lengths.map { |key_value| key_value.last }
