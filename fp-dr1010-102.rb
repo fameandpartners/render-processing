@@ -14,7 +14,7 @@ class Dress
     @ignorable_customizations = %w( a4 )
     @starting_json = Hash.new { |hash,key| hash[key] = Hash.new {|hash2,key2| hash2[key2] = Hash.new } }
     @all_lengths = { "micro": "Micro-Mini", "knee": "Knee", "mini": "Mini", "midi": "Midi", "ankle": "Ankle", "maxi": "Maxi"}
-    @search_directories = ["/home/ubuntu/Dropbox/renderfiles/Bridesmaid Collection/11. Models and Customisations/Shift Dress/Rendered PNGs"]
+    @search_directories = ["/home/ubuntu/Dropbox/renderfiles/Bridesmaid Collection/11. Models and Customisations/Shift Dress/Rendered PNGs/sides"]
     @starting_json['Micro-Mini']['default'] = { "front":
                                                   {
                                                     "bottom": "base_micro_mini_bottom_front",
