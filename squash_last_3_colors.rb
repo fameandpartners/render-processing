@@ -96,9 +96,9 @@ else
   search_directories = dress.search_directories
   output_directory = ARGV[1]
   temp_directory = ARGV[2]
+  command_sets = []  
   ARGV[3..ARGV.length].each_slice(2) do |csv_file, length|
     puts "Working on #{csv_file} for #{length}"
-    command_sets = []
     (15..17).each do |color|
       CSV.foreach( csv_file, :headers => false ) do |row|
         if( row.length > 2 )
@@ -122,8 +122,8 @@ else
         end
       end
     end
-    run( command_sets )
   end
+  run( command_sets )  
 end
 
 
