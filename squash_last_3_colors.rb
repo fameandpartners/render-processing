@@ -89,40 +89,41 @@ def build_color( color_number )
 end
 
 if( ARGV.length < 4 )
-  puts "usage: ruby squash.rb dress_id <CSV> <LENGTH> <OUTPUT DIRECTORY> <TEMP DIRECTORY>"
+  puts "usage: ruby squash.rb dress_id <OUTPUT DIRECTORY> <TEMP DIRECTORY> <CSV> <LENGTH> <CSV> <LENGTH> ..."
 else
   puts Time.now
   dress = Dress.new
   search_directories = dress.search_directories
-  csv_file = ARGV[1]
-  length = ARGV[3]
-  output_directory = ARGV[3]
-  temp_directory = ARGV.last
-  command_sets = []
-  (15..17).each do |color|
-    CSV.foreach( csv_file, :headers => false ) do |row|
-      if( row.length > 2 )
-        command_sets << build_combine_files_commands( row[1].split( ' ' ),
-                                                      'front',
-                                                      length,
-                                                      build_color(color),
-                                                      row[0],
-                                                      search_directories,
-                                                      output_directory,
-                                                      temp_directory )
-        command_sets << build_combine_files_commands( row[2].split( ' ' ),
-                                                      'back',
-                                                      length,
-                                                      build_color(color),
-                                                      row[0],
-                                                      search_directories,
-                                                      output_directory,
-                                                      temp_directory )
-        
+  output_directory = ARGV[1]
+  temp_directory = ARGV[2]
+  ARGV[3..ARGV.length].each_slice(2) do |csv_file, length|
+    puts "Working on #{csv_file} for #{length}"
+    command_sets = []
+    (15..17).each do |color|
+      CSV.foreach( csv_file, :headers => false ) do |row|
+        if( row.length > 2 )
+          command_sets << build_combine_files_commands( row[1].split( ' ' ),
+                                                        'front',
+                                                        length,
+                                                        build_color(color),
+                                                        row[0],
+                                                        search_directories,
+                                                        output_directory,
+                                                        temp_directory )
+          command_sets << build_combine_files_commands( row[2].split( ' ' ),
+                                                        'back',
+                                                        length,
+                                                        build_color(color),
+                                                        row[0],
+                                                        search_directories,
+                                                        output_directory,
+                                                        temp_directory )
+          
+        end
       end
     end
+    run( command_sets )
   end
-  run( command_sets )
 end
 
 
