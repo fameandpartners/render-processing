@@ -1,7 +1,7 @@
-require './fp-dr1002-102'
+require "./#{ARGV.first}"
 
 dress = Dress.new
-output_directory = ARGV.first
+output_directory = ARGV.last
 search_directory = dress.search_directories.first
 
 def build_image_file_name( base_filename, input_directory, color )
