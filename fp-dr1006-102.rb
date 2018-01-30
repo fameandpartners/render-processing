@@ -84,7 +84,7 @@ class Dress
                                              },
                                            "back":
                                              {
-                                               "neckline": "base_neckline_back"
+                                               "neckline": "base_neckline_back",
                                                "bottom": "base_maxi_bottom_back"
                                                   
                                              }
