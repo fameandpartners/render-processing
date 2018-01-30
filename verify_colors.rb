@@ -1,4 +1,4 @@
-require './fp-dr1010-102'
+require "./#{ARGV.first}"
 dress = Dress.new
 
 directory = dress.search_directories.first
