@@ -18,11 +18,13 @@ class Dress
     @starting_json['Micro-Mini']['default'] = { "front":
                                                   {
                                                     "bottom": "base_micro_mini_bottom_front",
+                                                    "belt" : "base_micro_mini_belt_front",
                                                     "neckline": "base_neckline_front"
                                                   },
                                                 "back":
                                                   {
                                                     "neckline": "base_neckline_back",
+                                                    "belt": "base_micro_mini_belt_back",
                                                     "bottom": "base_micro_mini_bottom_back"
                                                   }
                                               }
@@ -30,11 +32,13 @@ class Dress
     @starting_json['Mini']['default'] = { "front":
                                             {
                                               "bottom": "base_mini_bottom_front",
+                                             "belt" : "base_mini_belt_front",
                                               "neckline": "base_neckline_front"
                                             },
                                           "back":
                                             {
                                               "neckline": "base_neckline_back",
+                                             "belt": "base_mini_belt_back",
                                              "bottom": "base_midi_bottom_back"
                                             }
                                         }
@@ -42,11 +46,13 @@ class Dress
     @starting_json['Knee']['default'] = { "front":
                                             {
                                               "bottom": "base_knee_bottom_front",
-                                              "neckline": "base_neckline_front"
+                                             "belt" : "base_knee_belt_front",
+                                             "neckline": "base_neckline_front"
                                             },
                                           "back":
                                             {
                                               "neckline": "base_neckline_back",
+                                             "belt": "base_knee_belt_back",                                             
                                               "bottom": "base_knee_bottom_back"
                                             }
                                         }
@@ -56,35 +62,41 @@ class Dress
     @starting_json['Midi']['default'] = { "front":
                                             {
                                               "bottom": "base_midi_bottom_front",
+                                             "belt" : "base_midi_belt_front",                                             
                                               "neckline": "base_neckline_front"
                                             },
                                           "back":
                                             {
                                               "neckline": "base_neckline_back",
+                                             "belt": "base_midi_belt_back",
                                               "bottom": "base_midi_bottom_back"
                                             }
                                         }
     
     @starting_json['Ankle']['default'] = { "front":
                                              {
-                                              "bottom": "base_ankle_bottom_front",
+                                               "bottom": "base_ankle_bottom_front",
+                                             "belt" : "base_ankle_belt_front", 
                                               "neckline": "base_neckline_front"
                                              },
                                            "back":
                                              {
                                                "neckline": "base_neckline_back",
+                                              "belt": "base_ankle_belt_back",                                              
                                               "bottom": "base_ankle_bottom_back"
                                              }
                                          }
     
     @starting_json['Maxi']['default'] = { "front":
                                             {
-                                              "bottom": "base_maxi_bottom_front",                                              
+                                              "bottom": "base_maxi_bottom_front",
+                                            "belt" : "base_maxi_belt_front",                                              
                                               "neckline": "base_neckline_front"
                                              },
                                            "back":
                                              {
                                                "neckline": "base_neckline_back",
+                                              "belt": "base_maxi_belt_back",
                                                "bottom": "base_maxi_bottom_back"
                                                   
                                              }
