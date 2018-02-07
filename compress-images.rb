@@ -23,6 +23,7 @@ def find_files_for_defaults( data, directories )
   to_return += find_specific_files( directories, "#{data[:bottom]}_*.png" ) if data[:bottom]
   to_return += find_specific_files( directories, "#{data[:belt]}_*.png" ) if data[:belt]
   to_return += find_specific_files( directories, "#{data[:neckline]}_*.png" ) if data[:neckline]
+  to_return += find_specific_files( directories, "#{data[:infront]}_*.png" ) if data[:infront]
 
   return to_return
 end
