@@ -24,3 +24,18 @@ All mass manipulation of S3 should be done through the AWS CLI.  This is the mos
 
 ### Git
 Git is installed and the keys are setup to be connected to the git account "douglasjsellers".  Source changes were being synced to the directory ~/code/render-processing via Git.
+
+## Render compression / combination process
+Please keep in mind that this process will, most likely, need to be totally redone to work with the new bridesmaid heirarchy.
+
+
+### Step 1: Getting individual render files into 
+The goal of this step was to compress and organize the render files produced by Dave P. and his team to allow them to be referenced by Caddy.  Once this is done Caddy then simulated how the renders would look when they were combined for each Customization Combination.  Using this the individual render files could be QA'ed and changes could be made before the, expensive, process of combining them occurred.  Most of the problems revealed in this stage were related to the way that the indivual renderers (people) named the output files when conflicting combinations or layer combinations were needed.
+
+Here was the basic process that was used:
+
+1. Make a description file that tells all the scripts about the file.  See fp-dr1001-102.rb as an example.
+2. Run compress-files.rb. Command looks something like this: `ruby compress-files.rb fp-dr1001-102 ./output`
+3. Sync that output to s3. Command looks something like this: `aws s3 synce ./output/* s3://mkt-fameandpartners/renders/caddy/fp-dr1001-102`
+
+That's it.  Caddy would automatically look in the outputted bucket structure so no changes were necessary on that side.
