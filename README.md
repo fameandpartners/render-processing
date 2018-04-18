@@ -53,3 +53,11 @@ Here was the basic process that was used:
 5. This process only generates the combination images, not the default images. To generate the default images you need to run render_default_images.rb. Command looks something like this: `ruby render_default_images.rb fp-dr1002-102 ./output`.
 6. Then sync the resulting default images. Command looks something like this: `aws s3 sync . s3://mkt-fameandpartners/renders/composites/fp-dr1003-102/800x800`.
 
+That's it.  Again, so simple.
+
+### Verifyication Scripts
+There are a few very common problems that occur in the render files. To check for these problems there are verification scripts:
+
+1. verify_colors.rb: For some reason when the renderers (people) export their files they often drop random colors here and there.  Once the raw render files are delivered the first step should be to run verify colors on the set of files and see what is missing.  Example command: `ruby verify_colors.rb fp-dr1002-102`.  It will output everything that is missing.
+2. verify_squash.rb: Squash produces thousands upon thousands of files. It can be hard to tell if it generated everything correctly. verify_squash.rb is meant to be run post squash.rb, on the output directory of squash. It will go through and verify that all the files that should have been created have been created. Command looks something like this: `ruby verify_squash.rb ./output micro_mini ./csvs/FP-DR1002-102-Micro-Mini.csv`.
+3. verify_final_dress.rb: Once all of the lengths and all of the steps have been completed this will go through s3 and be supre all the pieces are present. This should be run when you think you are done with a style. Command looks something like: `ruby verify_final_dress.rb fp-dr1001-102`
