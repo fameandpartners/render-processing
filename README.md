@@ -55,7 +55,17 @@ Here was the basic process that was used:
 
 That's it.  Again, so simple.
 
-### Verifyication Scripts
+### Step 3: Generate all the thumbnails
+The last step is to generate the top-crop, bottom-crop and 142x142 thumbnails used by the PDP.
+
+Here was the basic process that was used:
+1. First, you need a list of all of the files to be thumbnailed. To do this use the aws cli to ls all the files and output them to a file. Command looks something like this: `aws s3 ls s3://mkt-fameandpartners/renders/composites/fp-dr1005-102/800x800 --recursive > 800_800_files.txt`
+2. Now, use the thumbnail_image.rb script to build the three different types of thumbnails.  Command looks something like `ruby thumbnail_image.rb ~/s3 800_800_files.txt output`
+3. Finally sync those files to s3. Command looks something like: `aws s3 sync . s3://mkt-fameandpartners/renders/composites/fp-dr1005-102`
+
+That should finish generating all the files. Run verify_final_dress.rb to be sure.
+
+### Verification Scripts
 There are a few very common problems that occur in the render files. To check for these problems there are verification scripts:
 
 1. verify_colors.rb: For some reason when the renderers (people) export their files they often drop random colors here and there.  Once the raw render files are delivered the first step should be to run verify colors on the set of files and see what is missing.  Example command: `ruby verify_colors.rb fp-dr1002-102`.  It will output everything that is missing.
