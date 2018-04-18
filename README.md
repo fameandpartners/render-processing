@@ -21,3 +21,6 @@ All mass manipulation of S3 should be done through the AWS CLI.  This is the mos
 `aws s3 ls s3://mkt-fameandpartners/renders/`
 
 `aws s3 sync . s3://mkt-fameandpartners/renders/composites/fp-dr1003-102/800x800`
+
+### Git
+Git is installed and the keys are setup to be connected to the git account "douglasjsellers".  Source changes were being synced to the directory ~/code/render-processing via Git.
