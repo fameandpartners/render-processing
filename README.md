@@ -19,4 +19,5 @@ All mass manipulation of S3 should be done through the AWS CLI.  This is the mos
 
 #### Examples of Useful commands
 `aws s3 ls s3://mkt-fameandpartners/renders/`
+
 `aws s3 sync . s3://mkt-fameandpartners/renders/composites/fp-dr1003-102/800x800`
