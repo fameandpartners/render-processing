@@ -36,6 +36,20 @@ Here was the basic process that was used:
 
 1. Make a description file that tells all the scripts about the file.  See fp-dr1001-102.rb as an example.
 2. Run compress-files.rb. Command looks something like this: `ruby compress-files.rb fp-dr1001-102 ./output`
-3. Sync that output to s3. Command looks something like this: `aws s3 synce ./output/* s3://mkt-fameandpartners/renders/caddy/fp-dr1001-102`
+3. Sync that output to s3. Command looks something like this: `aws s3 sync ./output/* s3://mkt-fameandpartners/renders/caddy/fp-dr1001-102`
+4. You will need to generate a list of all of the render files to feed into the JSON generating script in the next step. There is a script to do this: list_all_files.rb.  Example command is: `ruby list_all_files.rb ~/Dropbox/renderfiles/Bridesmaid\ Collection/11.\ Models\ and\ Customisations/The\ Column\ Dress\ and\ Jump\ Suit/Rendered\ PNG\'s/TAKE\ SYSTEM\ 6K > all_files.txt`
+4. JSON describing the images then needs to be imported into caddy. The JSON can be generated with the generate-json-from-images.rb script. Example command looks something like this: `ruby generate-json-from-images fp-dr1002-102 all_files.txt`. This will output a big blob of JSON that could be imported directly into Firebase to make Caddy work.
 
-That's it.  Caddy would automatically look in the outputted bucket structure so no changes were necessary on that side.
+That's it. Your ready for QA. Simple.
+
+### Step 2: Generating all the composite
+Once all of the renders have been QA'ed then it's time to generate all of the composite files. The composite files are simply an image for every possible customization combination. This is a few hundred thousand files per style. Generally this process takes twelve to twenty four hours. 
+
+Here was the basic process that was used:
+1. Export all of the combinations for a style for a given height from Caddy to a CSV. See csvs/FP-DR1002-102-Ankle.csv for an example.
+2. Modify squash.rb so that it imports the style that you want on line 1.
+3. Run squash.rb on the csv. Command looks something like this: `ruby squash.rb ./csvs/FP-DR1002-102-Micro-Mini.csv micro_mini ./output ./temp`.  The temp directory is used for intermediate image magick files. The size is what is encoded into the final file name. This command takes forever so it helps to output the results to a log file, background process it and then disown it.
+4. Sync the results to s3.  Command looks something like this: `aws s3 sync . s3://mkt-fameandpartners/renders/composites/fp-dr1003-102/800x800`. The output directory looks like whatever the front end is expecting
+5. This process only generates the combination images, not the default images. To generate the default images you need to run render_default_images.rb. Command looks something like this: `ruby render_default_images.rb fp-dr1002-102 ./output`.
+6. Then sync the resulting default images. Command looks something like this: `aws s3 sync . s3://mkt-fameandpartners/renders/composites/fp-dr1003-102/800x800`.
+
